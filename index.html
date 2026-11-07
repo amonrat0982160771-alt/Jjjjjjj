@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ห้องทดลองอะตอม | มวลอะตอมและสูตรเคมี ม.4</title>
+<style>
+:root{--ink:#18233d;--muted:#64718b;--blue:#3568e8;--cyan:#24b8c7;--pink:#f06a9b;--yellow:#ffd166;--paper:#f4f7ff;--line:#dfe6f4}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
+header{padding:34px 20px 28px;background:linear-gradient(120deg,#172b59,#315fd0 65%,#21a8b7);color:white}
+.wrap{max-width:1080px;margin:auto;padding:0 18px}header .eyebrow{font-size:.85rem;letter-spacing:.12em;opacity:.85}h1{font-size:clamp(1.8rem,5vw,3rem);line-height:1.15;margin:8px 0}header p{max-width:720px;margin:10px 0 0;color:#e7efff}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 0}nav a{color:white;text-decoration:none;border:1px solid #ffffff66;border-radius:99px;padding:7px 13px;font-size:.9rem}
+main{padding:24px 0 55px}.card{background:white;border:1px solid var(--line);border-radius:20px;padding:22px;margin:18px 0;box-shadow:0 8px 28px #223c7010}
+h2{font-size:1.35rem;margin:0 0 8px}h3{font-size:1.05rem;margin:0 0 8px}.sub{color:var(--muted);margin:0 0 16px}.tag{display:inline-block;background:#eaf0ff;color:#315fd0;border-radius:99px;padding:4px 10px;font-size:.78rem;font-weight:700;margin-bottom:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.panel{background:#f7f9ff;border:1px solid var(--line);border-radius:15px;padding:16px}
+label{font-weight:650;display:block;margin:10px 0 5px}select,input[type=range],input[type=number]{width:100%}select,input[type=number]{padding:10px;border:1px solid #cbd5e8;border-radius:10px;background:white;color:var(--ink);font:inherit}
+input[type=range]{accent-color:var(--blue)}.big{font-size:2rem;font-weight:800;color:var(--blue);font-variant-numeric:tabular-nums}.small{font-size:.9rem;color:var(--muted)}
+button{border:0;border-radius:11px;padding:10px 16px;background:var(--blue);color:white;font-weight:700;font:inherit;cursor:pointer}button.secondary{background:#eaf0ff;color:#254fb9}button:focus,select:focus,input:focus{outline:3px solid #8daaff88;outline-offset:2px}
+.atom-stage{height:180px;display:grid;place-items:center;overflow:hidden;position:relative;background:radial-gradient(circle,#edf4ff,#f9fbff 70%);border-radius:14px}
+.atom{width:115px;height:115px;border:2px dashed #8ea9e8;border-radius:50%;position:relative;animation:spin 9s linear infinite}
+.atom:before,.atom:after{content:"";position:absolute;inset:22px -10px;border:2px solid #80cbd2;border-radius:50%;transform:rotate(60deg)}
+.atom:after{transform:rotate(-60deg)}.nucleus{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:30px;height:30px;background:linear-gradient(135deg,#f06a9b,#ffb06b);border-radius:50%;box-shadow:0 0 0 8px #f06a9b22}
+.electron{position:absolute;width:10px;height:10px;border-radius:50%;background:#3568e8;top:4px;left:50%;box-shadow:0 0 0 4px #3568e822}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bar-wrap{height:190px;display:flex;align-items:end;gap:12px;padding:12px 10px 0;border-bottom:1px solid #aebbd2}
+.bar{flex:1;min-width:35px;border-radius:9px 9px 0 0;background:linear-gradient(180deg,#28bdc5,#3970e8);position:relative;transition:height .25s}
+.bar span{position:absolute;bottom:-28px;left:50%;transform:translateX(-50%);font-size:.8rem;color:var(--muted);white-space:nowrap}
+.bar b{position:absolute;top:-25px;left:50%;transform:translateX(-50%);font-size:.8rem}
+.result{padding:12px;border-radius:12px;background:#eefaf8;color:#17645e;margin-top:12px}
+.formula{font-size:2rem;font-weight:800;letter-spacing:.04em;color:#244fc0;text-align:center;padding:12px}
+.atom-count{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.count-chip{background:#eef2ff;border-radius:10px;padding:8px 12px;font-weight:700}
+.question{border-top:1px solid var(--line);padding:15px 0}.question:first-of-type{border-top:0}.answers{display:grid;gap:7px;margin-top:8px}.answers label{font-weight:500;background:#f7f9ff;border:1px solid var(--line);border-radius:10px;padding:9px;display:flex;gap:8px;align-items:center;margin:0}.answers input{accent-color:var(--blue)}
+.feedback{font-weight:650;margin-top:8px;min-height:24px}.correct{color:#13836f}.wrong{color:#c04d6b}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:15px}
+@media(max-width:600px){.card{padding:16px}.bar-wrap{gap:7px}.bar span{font-size:.7rem}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">INTERACTIVE CHEMISTRY LAB • มัธยมศึกษาปีที่ 4</div>
+<h1>มวลอะตอมและสูตรเคมี</h1>
+<p>สำรวจอะตอม ทดลองปรับสัดส่วนไอโซโทป และสร้างสูตรเคมีด้วยตนเอง พร้อมกราฟและผลคำนวณที่เปลี่ยนแปลงทันที</p>
+<nav><a href="#mass">01 มวลอะตอม</a><a href="#formula">02 สูตรเคมี</a><a href="#quiz">03 ตรวจสอบความเข้าใจ</a></nav>
+</div></header>
+<main class="wrap">
+<section class="card" id="mass">
+<span class="tag">กิจกรรมที่ 1 • ทดลองและสังเกต</span><h2>ห้องทดลองมวลอะตอมเฉลี่ย</h2>
+<p class="sub">ปรับร้อยละของไอโซโทป แล้วสังเกตว่ามวลอะตอมเฉลี่ยเปลี่ยนไปอย่างไร (ใช้แบบจำลองธาตุ X)</p>
+<div class="grid">
+<div class="panel">
+<h3>แบบจำลองอะตอม</h3>
+<div class="atom-stage"><div class="atom"><div class="electron"></div><div class="nucleus"></div></div></div>
+<p class="small">ภาพเคลื่อนไหวแสดงแบบจำลองอะตอมอย่างง่าย ไม่ได้แสดงขนาดหรือวงโคจรตามสัดส่วนจริง</p>
+<label for="iso1">ไอโซโทป X-10 : 10 u — <span id="p1txt">60</span>%</label>
+<input id="iso1" type="range" min="0" max="100" value="60">
+<label for="iso2">ไอโซโทป X-11 : 11 u — <span id="p2txt">40</span>%</label>
+<input id="iso2" type="range" min="0" max="100" value="40">
+<div class="result">สัดส่วนรวม: <strong id="sum">100%</strong> <span id="sumNote"></span></div>
+</div>
+<div class="panel">
+<h3>ผลการทดลองแบบเรียลไทม์</h3>
+<div class="small">มวลอะตอมเฉลี่ย = Σ (มวลไอโซโทป × สัดส่วนในรูปทศนิยม)</div>
+<div class="big" id="avg">10.40 u</div>
+<div class="bar-wrap" aria-label="กราฟเปรียบเทียบสัดส่วนไอโซโทป">
+<div class="bar" id="bar1" style="height:60%"><b id="b1">60%</b><span>X-10</span></div>
+<div class="bar" id="bar2" style="height:40%"><b id="b2">40%</b><span>X-11</span></div>
+</div>
+<p class="small" style="margin-top:38px">กราฟแสดงร้อยละของไอโซโทปแต่ละชนิด</p>
+<p id="analysis" class="result">เมื่อ X-10 มีสัดส่วนมากกว่า มวลเฉลี่ยจะอยู่ใกล้ 10 u มากกว่า 11 u</p>
+</div>
+</div>
+</section>
+
+<section class="card" id="formula">
+<span class="tag">กิจกรรมที่ 2 • สร้างและวิเคราะห์</span><h2>เครื่องมือสร้างสูตรเคมี</h2>
+<p class="sub">เลือกธาตุและกำหนดจำนวนอะตอม เพื่อสังเกตสูตรเคมีและองค์ประกอบของสาร</p>
+<div class="grid">
+<div class="panel">
+<h3>กำหนดจำนวนอะตอม</h3>
+<label for="element">เลือกธาตุ</label>
+<select id="element"><option value="C">คาร์บอน (C)</option><option value="H">ไฮโดรเจน (H)</option><option value="O">ออกซิเจน (O)</option><option value="N">ไนโตรเจน (N)</option><option value="Na">โซเดียม (Na)</option><option value="Cl">คลอรีน (Cl)</option></select>
+<label for="number">จำนวนอะตอม (1–12)</label>
+<input id="number" type="range" min="1" max="12" value="2">
+<div class="big"><span id="numtxt">2</span> อะตอม</div>
+<button id="add">เพิ่มธาตุลงในสูตร</button> <button class="secondary" id="reset">ล้างสูตร</button>
+<p class="small">ตัวอย่าง: เพิ่ม C 1 อะตอม และ O 2 อะตอม จะได้ CO₂</p>
+</div>
+<div class="panel">
+<h3>สูตรเคมีของคุณ</h3>
+<div class="formula" id="formulaView">—</div>
+<div class="atom-count" id="counts"><span class="small">ยังไม่มีธาตุในสูตร</span></div>
+<div class="result" id="formulaExplain">สูตรเคมีใช้สัญลักษณ์ธาตุและตัวเลขห้อยเพื่อบอกชนิดและจำนวนอะตอม</div>
+</div>
+</div>
+</section>
+
+<section class="card" id="quiz">
+<span class="tag">กิจกรรมที่ 3 • ประเมินผล</span><h2>คำถามท้ายกิจกรรม 3 ข้อ</h2>
+<p class="sub">เลือกคำตอบที่ถูกต้อง แล้วกดตรวจคำตอบเพื่อดูเฉลยและคะแนน</p>
+<form id="quizForm">
+<div class="question"><strong>1. มวลอะตอมเฉลี่ยคำนวณจากข้อมูลใด</strong><div class="answers">
+<label><input type="radio" name="q1" value="a"> มวลของไอโซโทปที่มีมวลมากที่สุดเท่านั้น</label>
+<label><input type="radio" name="q1" value="b"> ผลรวมของมวลไอโซโทปคูณด้วยสัดส่วนของแต่ละไอโซโทป</label>
+<label><input type="radio" name="q1" value="c"> จำนวนโปรตอนบวกจำนวนนิวตรอนของทุกอะตอม</label></div><div class="feedback" id="f1"></div></div>
+<div class="question"><strong>2. ธาตุ X มีไอโซโทป X-10 ร้อยละ 25 และ X-12 ร้อยละ 75 มวลอะตอมเฉลี่ยเท่ากับเท่าใด</strong><div class="answers">
+<label><input type="radio" name="q2" value="a"> 10.5 u</label><label><input type="radio" name="q2" value="b"> 11.0 u</label><label><input type="radio" name="q2" value="c"> 11.5 u</label></div><div class="feedback" id="f2"></div></div>
+<div class="question"><strong>3. สูตร H₂O แสดงว่าในหนึ่งโมเลกุลมีอะตอมชนิดใดและจำนวนเท่าใด</strong><div class="answers">
+<label><input type="radio" name="q3" value="a"> H 2 อะตอม และ O 1 อะตอม</label><label><input type="radio" name="q3" value="b"> H 1 อะตอม และ O 2 อะตอม</label><label><input type="radio" name="q3" value="c"> H 2 อะตอม และ O 2 อะตอม</label></div><div class="feedback" id="f3"></div></div>
+<button type="submit">ตรวจคำตอบ</button> <button type="button" class="secondary" id="showAll">แสดงเฉลย</button>
+<div class="result" id="score" aria-live="polite">คะแนนจะแสดงที่นี่</div>
+</form>
+</section>
+<section class="card"><h2>สรุปสิ่งที่ได้เรียนรู้</h2><div class="grid">
+<div class="panel"><h3>มวลอะตอมเฉลี่ย</h3><p>เป็นค่าเฉลี่ยถ่วงน้ำหนักของมวลไอโซโทป โดยคำนึงถึงสัดส่วนตามธรรมชาติของแต่ละไอโซโทป</p></div>
+<div class="panel"><h3>สูตรเคมี</h3><p>เป็นการเขียนแทนสารด้วยสัญลักษณ์ธาตุและตัวเลขห้อย เพื่อระบุชนิดและจำนวนอะตอมหรืออัตราส่วนของธาตุในสาร</p></div>
+</div></section>
+</main>
+<footer>สื่อการเรียนรู้วิชาเคมี • ระดับชั้นมัธยมศึกษาปีที่ 4</footer>
+<script>
+const $=id=>document.getElementById(id);
+const iso1=$('iso1'),iso2=$('iso2');
+function updateMass(){
+ let p=+iso1.value, q=100-p; iso2.value=q;
+ $('p1txt').textContent=p;$('p2txt').textContent=q;$('sum').textContent=(p+q)+'%';
+ $('avg').textContent=(10*p/100+11*q/100).toFixed(2)+' u';
+ $('bar1').style.height=Math.max(2,p)+'%';$('bar2').style.height=Math.max(2,q)+'%';
+ $('b1').textContent=p+'%';$('b2').textContent=q+'%';
+ $('analysis').textContent=p>q?'X-10 มีสัดส่วนมากกว่า มวลอะตอมเฉลี่ยจึงอยู่ใกล้ 10 u':p<q?'X-11 มีสัดส่วนมากกว่า มวลอะตอมเฉลี่ยจึงอยู่ใกล้ 11 u':'ไอโซโทปทั้งสองมีสัดส่วนเท่ากัน มวลอะตอมเฉลี่ยอยู่กึ่งกลางระหว่าง 10 u และ 11 u';
+}
+iso1.addEventListener('input',updateMass);
+const counts={};
+$('number').addEventListener('input',e=>$('numtxt').textContent=e.target.value);
+function renderFormula(){
+ const entries=Object.entries(counts);
+ $('formulaView').textContent=entries.length?entries.map(([el,n])=>el+(n>1?String(n).replace(/[0-9]/g,d=>'₀₁₂₃₄₅₆₇₈₉'[+d]):'')).join(''):'—';
+ $('counts').innerHTML=entries.length?entries.map(([el,n])=>`<span class="count-chip">${el}: ${n} อะตอม</span>`).join(''):'<span class="small">ยังไม่มีธาตุในสูตร</span>';
+ $('formulaExplain').textContent=entries.length?'สูตรนี้ประกอบด้วย '+entries.map(([el,n])=>el+' '+n+' อะตอม').join(' และ ')+' รวม '+entries.reduce((s,[,n])=>s+n,0)+' อะตอม':'สูตรเคมีใช้สัญลักษณ์ธาตุและตัวเลขห้อยเพื่อบอกชนิดและจำนวนอะตอม';
+}
+$('add').addEventListener('click',()=>{let el=$('element').value,n=+$('number').value;counts[el]=(counts[el]||0)+n;renderFormula()});
+$('reset').addEventListener('click',()=>{Object.keys(counts).forEach(k=>delete counts[k]);renderFormula()});
+const keys={q1:'b',q2:'c',q3:'a'};
+const explanations={
+ q1:'เฉลย: ข. คำนวณโดยนำมวลของไอโซโทปแต่ละชนิดคูณกับสัดส่วน แล้วนำผลคูณมารวมกัน',
+ q2:'เฉลย: ค. (10 × 0.25) + (12 × 0.75) = 11.5 u',
+ q3:'เฉลย: ก. H₂O มีไฮโดรเจน 2 อะตอม และออกซิเจน 1 อะตอม'
+};
+function reveal(){
+ let score=0;
+ for(let i=1;i<=3;i++){
+  let q='q'+i,selected=document.querySelector(`input[name="${q}"]:checked`),f=$('f'+i);
+  if(selected&&selected.value===keys[q]){score++;f.className='feedback correct';f.textContent='ถูกต้อง! '+explanations[q]}
+  else{f.className='feedback wrong';f.textContent=(selected?'ยังไม่ถูกต้อง • ':'ยังไม่ได้เลือกคำตอบ • ')+explanations[q]}
+ }
+ $('score').textContent=`คะแนนของคุณ ${score}/3 ข้อ`;
+}
+$('quizForm').addEventListener('submit',e=>{e.preventDefault();reveal()});
+$('showAll').addEventListener('click',()=>{for(let i=1;i<=3;i++){$('f'+i).className='feedback';$('f'+i).textContent=explanations['q'+i]}$('score').textContent='แสดงเฉลยครบทั้ง 3 ข้อแล้ว'});
+updateMass();renderFormula();
+</script>
+</body></html>
